@@ -21,16 +21,20 @@ const RedirectLink = () => {
 
   useEffect(() => {
     if (!loading && data && data.original_url) {
+      console.log("Found URL data:", data);
       fnStats();
+    } else if (!loading && !data) {
+      console.log("No data found for ID:", id);
     }
   }, [loading, data]);
 
   // If there's an error or no data found, show a message
   if (!loading && (error || !data)) {
+    console.log("Error or no data:", error, data);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold text-red-500">Link not found</h1>
-        <p className="text-gray-600 mt-2">The short URL you're looking for doesn't exist.</p>
+        <p className="text-gray-600 mt-2">The short URL "{id}" doesn't exist.</p>
       </div>
     );
   }

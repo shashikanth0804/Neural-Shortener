@@ -43,6 +43,13 @@ export async function getClicksForUrl(url_id) {
 const parser = new UAParser();
 
 export const storeClicks = async ({id, originalUrl}) => {
+  console.log("Attempting to store click and redirect:", {id, originalUrl});
+  
+  if (!originalUrl) {
+    console.error("No original URL provided for redirect");
+    return;
+  }
+
   try {
     const res = parser.getResult();
     const device = res.type || "desktop"; // Default to desktop if type is not detected
@@ -58,13 +65,14 @@ export const storeClicks = async ({id, originalUrl}) => {
       device: device,
     });
 
+    console.log("Click recorded, redirecting to:", originalUrl);
+    
     // Redirect to the original URL immediately
     window.location.href = originalUrl;
   } catch (error) {
     console.error("Error recording click:", error);
     // Even if click recording fails, still redirect
-    if (originalUrl) {
-      window.location.href = originalUrl;
-    }
+    console.log("Redirecting despite error to:", originalUrl);
+    window.location.href = originalUrl;
   }
 };
