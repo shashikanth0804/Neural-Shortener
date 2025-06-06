@@ -61,7 +61,6 @@ const LandingPage = () => {
             Yes. Creating an account allows you to manage your URLs, view
             analytics, and customize your short URLs.
           </AccordionContent>
-        </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger>
