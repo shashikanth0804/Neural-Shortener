@@ -42,7 +42,7 @@ const LandingPage = () => {
         src="/banner1.jpg" // replace with 2 in small screens
         className="w-full my-11 md:px-11"
       />
-      <Accordion type="multiple" collapsible className="w-full md:px-11">
+      <Accordion type="multiple" className="w-full md:px-11">
         <AccordionItem value="item-1">
           <AccordionTrigger>
             How does the Trimrr URL shortener works?
@@ -61,6 +61,7 @@ const LandingPage = () => {
             Yes. Creating an account allows you to manage your URLs, view
             analytics, and customize your short URLs.
           </AccordionContent>
+        </AccordionContent>
         </AccordionItem>
         <AccordionItem value="item-3">
           <AccordionTrigger>
