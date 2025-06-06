@@ -58,9 +58,13 @@ export const storeClicks = async ({id, originalUrl}) => {
       device: device,
     });
 
-    // Redirect to the original URL
+    // Redirect to the original URL immediately
     window.location.href = originalUrl;
   } catch (error) {
     console.error("Error recording click:", error);
+    // Even if click recording fails, still redirect
+    if (originalUrl) {
+      window.location.href = originalUrl;
+    }
   }
 };
