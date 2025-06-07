@@ -9,12 +9,7 @@ const RedirectLink = () => {
   const {id} = useParams();
   console.log("RedirectLink component loaded with id:", id);
 
-  const {loading, data, fn, error} = useFetch(getLongUrl, id);
-
-  const {loading: loadingStats, fn: fnStats} = useFetch(storeClicks, {
-    id: data?.id,
-    originalUrl: data?.original_url,
-  });
+  const {loading, data, fn} = useFetch(getLongUrl, id);
 
   useEffect(() => {
     console.log("useEffect triggered, calling fn()");
@@ -22,45 +17,49 @@ const RedirectLink = () => {
   }, []);
 
   useEffect(() => {
-    console.log("Data effect triggered:", {loading, data, error});
+    console.log("Data effect triggered:", {loading, data});
+    
     if (!loading && data && data.original_url) {
-      console.log("Found URL data, calling fnStats:", data);
-      fnStats();
-    } else if (!loading && !data) {
-      console.log("No data found for ID:", id);
+      console.log("Found URL data, storing click and redirecting:", data);
+      
+      // Store the click and then redirect
+      storeClicks({
+        id: data.id,
+        originalUrl: data.original_url,
+      }).then(() => {
+        console.log("Click stored, redirecting to:", data.original_url);
+        // Redirect to the original URL
+        window.location.href = data.original_url;
+      }).catch((error) => {
+        console.error("Error storing click, but still redirecting:", error);
+        // Even if click recording fails, still redirect
+        window.location.href = data.original_url;
+      });
     }
   }, [loading, data]);
 
-  console.log("Current state:", {loading, data, error, loadingStats});
+  console.log("Current state:", {loading, data});
 
-  // If there's an error or no data found, show a message
-  if (!loading && (error || !data)) {
-    console.log("Showing error page - Error or no data:", error, data);
+  // If there's an error or no data found after loading is complete
+  if (!loading && !data) {
+    console.log("No data found for ID:", id);
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <h1 className="text-2xl font-bold text-red-500">Link not found</h1>
         <p className="text-gray-600 mt-2">The short URL "{id}" doesn't exist.</p>
-        <p className="text-sm text-gray-500 mt-2">Debug: loading={loading.toString()}, error={error?.message}, data={JSON.stringify(data)}</p>
+        <a href="/" className="text-blue-500 hover:underline mt-4">
+          Go back to homepage
+        </a>
       </div>
     );
   }
 
-  if (loading || loadingStats) {
-    console.log("Showing loading state");
-    return (
-      <>
-        <BarLoader width={"100%"} color="#36d7b7" />
-        <br />
-        Redirecting...
-      </>
-    );
-  }
-
-  console.log("Component render complete - should have redirected by now");
+  // Show loading state
   return (
     <div className="flex flex-col items-center justify-center min-h-screen">
-      <p>If you see this, something went wrong with the redirect.</p>
-      <p className="text-sm text-gray-500 mt-2">Debug info: {JSON.stringify({loading, data, error, loadingStats})}</p>
+      <BarLoader width={"100%"} color="#36d7b7" />
+      <br />
+      <p>Redirecting...</p>
     </div>
   );
 };
