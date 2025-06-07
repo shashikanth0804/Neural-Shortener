@@ -118,7 +118,7 @@ export function CreateLink() {
         />
         {errors.longUrl && <Error message={errors.longUrl} />}
         <div className="flex items-center gap-2">
-          <Card className="p-2">neural.in</Card> /
+          <Card className="p-2">localhost:5173</Card> /
           <Input
             id="customUrl"
             placeholder="Custom Link (optional)"
@@ -126,7 +126,7 @@ export function CreateLink() {
             onChange={handleChange}
           />
         </div>
-        {error && <Error message={errors.message} />}
+        {error && <Error message={error.message} />}
         <DialogFooter className="sm:justify-start">
           <Button
             type="button"
