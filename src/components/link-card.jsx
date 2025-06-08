@@ -7,6 +7,8 @@ import {deleteUrl} from "@/db/apiUrls";
 import {BeatLoader} from "react-spinners";
 
 const LinkCard = ({url = [], fetchUrls}) => {
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+
   const downloadImage = () => {
     const imageUrl = url?.qr;
     const fileName = url?.title; // Desired file name for the downloaded image
@@ -42,7 +44,7 @@ const LinkCard = ({url = [], fetchUrls}) => {
           {url?.title}
         </span>
         <span className="text-2xl text-blue-400 font-bold hover:underline cursor-pointer">
-          http://localhost:5173/{shortUrl}
+          {baseUrl}/{shortUrl}
         </span>
         <span className="flex items-center gap-1 hover:underline cursor-pointer">
           <LinkIcon className="p-1" />
@@ -56,7 +58,7 @@ const LinkCard = ({url = [], fetchUrls}) => {
         <Button
           variant="ghost"
           onClick={() =>
-            navigator.clipboard.writeText(`http://localhost:5173/${shortUrl}`)
+            navigator.clipboard.writeText(`${baseUrl}/${shortUrl}`)
           }
         >
           <Copy />
